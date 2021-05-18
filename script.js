@@ -1,32 +1,33 @@
 let userArray = [];
-const container = document.querySelector(".card");
+const container = document.querySelector(".myTable");
 const today = new Date();
 const date =
-today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
+  today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
 let pincode;
 const pincodeButton = document.querySelector(".pincodeButton");
 
-
 const createCardList = (array) => {
-//   container.innerHTML = "";
+  //   container.innerHTML = "";
 
   array = array.centers;
   array.forEach((obj) => {
-    const card = document.createElement("tr");
-    card.classList.add("card");
+    const card = document.createElement("div");
+    card.classList.add("myDiv");
+    let temp;
+    
+    temp=`
+    <tr>
+      <td>${obj.center_id}</td>
+      <td>${obj.name}</td>
+      <td>${obj.address}</td>
+      <td>${obj.fee_type}</td>
+    `;
 
-    card.innerHTML=`<tr>
-    <th>${obj.center_id}</th>
-    <th>${obj.name}</th>
-    <th>${obj.address}</th>
-    <th>${obj.fee_type}</th>
-</tr>`;
-
-    obj=obj.sessions;
-
+    obj = obj.sessions;
+    temp += `<td>
+          <table>`;
     obj.forEach((item) => {
-        card.innerHTML+=`
-        <table>
+      temp += `
         <tr>
             <td>${item.available_capacity}</td>
             <td>${item.available_capacity_dose1}</td>
@@ -35,15 +36,18 @@ const createCardList = (array) => {
             <td>${item.min_age_limit}</td>
             <td>${item.vaccine}</td>
         </tr>
-        </table>
-        `
-    })
+        `;
+    });
+    temp += `</table></td></tr>`;
+    card.innerHTML = temp;
     container.appendChild(card);
+    console.log(card.innerHTML);
   });
 };
 pincodeButton.addEventListener("click", () => {
-    pincode = prompt("Enter PinCode to search for covid vaccines in India");
-    const apiUrl =
+  // pincode = prompt("Enter PinCode to search for covid vaccines in India");
+  pincode = 110001;
+  const apiUrl =
     "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" +
     pincode +
     "&date=" +
@@ -59,4 +63,3 @@ pincodeButton.addEventListener("click", () => {
       // console.log(result.centers[0].name);
     });
 });
-
