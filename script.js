@@ -10,43 +10,50 @@ const createCardList = (array) => {
   //   container.innerHTML = "";
 
   array = array.centers;
-  array.forEach((obj) => {
-    const card = document.createElement("div");
-    card.classList.add("myDiv");
-    let temp;
+  array.forEach((obj1) => {
     
-    temp=`
-    <tr>
-      <td>${obj.center_id}</td>
-      <td>${obj.name}</td>
-      <td>${obj.address}</td>
-      <td>${obj.fee_type}</td>
-    `;
+    let temp;
 
-    obj = obj.sessions;
-    temp += `<td>
-          <table>`;
+    obj = obj1.sessions;
     obj.forEach((item) => {
+      const card = document.createElement("tr");
+      card.classList.add("myDiv");
+      if(!temp){
+        temp=`
+          <td>${obj1.center_id}</td>
+          <td>${obj1.name}</td>
+          <td>${obj1.address}</td>
+          <td>${obj1.fee_type}</td>
+          `;
+      }
+      else {
+        temp=`
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          `;
+      }
+      
       temp += `
-        <tr>
-            <td>${item.available_capacity}</td>
-            <td>${item.available_capacity_dose1}</td>
-            <td>${item.available_capacity_dose2}</td>
-            <td>${item.date}</td>
-            <td>${item.min_age_limit}</td>
-            <td>${item.vaccine}</td>
-        </tr>
-        `;
+              <td>${item.available_capacity}</td>
+              <td>${item.available_capacity_dose1}</td>
+              <td>${item.available_capacity_dose2}</td>
+              <td>${item.date}</td>
+              <td>${item.min_age_limit}</td>
+              <td>${item.vaccine}</td>
+              
+          `;
+  
+      card.innerHTML = temp ;
+      container.appendChild(card);  
+
+      console.log(card);
     });
-    temp += `</table></td></tr>`;
-    card.innerHTML = temp;
-    container.appendChild(card);
-    console.log(card.innerHTML);
   });
 };
 pincodeButton.addEventListener("click", () => {
-  // pincode = prompt("Enter PinCode to search for covid vaccines in India");
-  pincode = 110001;
+  pincode = prompt("Enter PinCode to search for covid vaccines in India");
   const apiUrl =
     "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" +
     pincode +
